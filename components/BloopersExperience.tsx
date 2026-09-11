@@ -60,6 +60,13 @@ export default function BloopersExperience() {
             <span className="sep">—</span>
             <span className="label">THE OUTTAKES</span>
           </p>
+
+          <div className="love-ribbon-eyebrow">
+            <span className="ribbon-tail-left" />
+            <span className="ribbon-text">🎀 OUR REAL, UNFILTERED MOMENTS · MADE WITH LOVE 💖</span>
+            <span className="ribbon-tail-right" />
+          </div>
+
           <h1 className="bloopers-title">
             The <em>Bloopers.</em>
           </h1>

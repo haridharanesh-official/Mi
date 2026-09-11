@@ -217,7 +217,7 @@ export function ConfettiCanvas() {
     };
     window.addEventListener('resize', handleResize);
 
-    const colors = ['#C99A55', '#E6C587', '#F4EFE5', '#8B4438', '#FFFFFF'];
+    const colors = ['#FF4D6D', '#FF758F', '#C99A55', '#E6C587', '#F4EFE5', '#E05780', '#5B1725'];
     const particles: {
       x: number;
       y: number;
@@ -228,21 +228,35 @@ export function ConfettiCanvas() {
       rotSpeed: number;
       color: string;
       alpha: number;
+      shape: 'heart' | 'petal' | 'ribbon';
     }[] = [];
 
-    for (let i = 0; i < 48; i++) {
+    const shapes: ('heart' | 'petal' | 'ribbon')[] = ['heart', 'heart', 'petal', 'ribbon'];
+
+    for (let i = 0; i < 64; i++) {
       particles.push({
         x: Math.random() * width,
         y: -10 - Math.random() * height * 0.4,
-        size: Math.random() * 5 + 3,
+        size: Math.random() * 8 + 6,
         speedY: Math.random() * 2 + 1.2,
-        speedX: (Math.random() - 0.5) * 1.5,
+        speedX: (Math.random() - 0.5) * 1.8,
         rotation: Math.random() * 360,
-        rotSpeed: (Math.random() - 0.5) * 4,
+        rotSpeed: (Math.random() - 0.5) * 3,
         color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: Math.random() * 0.8 + 0.2,
+        alpha: Math.random() * 0.8 + 0.25,
+        shape: shapes[Math.floor(Math.random() * shapes.length)],
       });
     }
+
+    const drawHeart = (c: CanvasRenderingContext2D, size: number) => {
+      const s = size / 2;
+      c.beginPath();
+      c.moveTo(0, s * 0.25);
+      c.bezierCurveTo(-s * 0.9, -s * 0.5, -s * 1.1, s * 0.45, 0, s * 1.25);
+      c.bezierCurveTo(s * 1.1, s * 0.45, s * 0.9, -s * 0.5, 0, s * 0.25);
+      c.closePath();
+      c.fill();
+    };
 
     let frame = 0;
     const render = () => {
@@ -258,7 +272,16 @@ export function ConfettiCanvas() {
         ctx.rotate((p.rotation * Math.PI) / 180);
         ctx.globalAlpha = p.alpha;
         ctx.fillStyle = p.color;
-        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.4);
+
+        if (p.shape === 'heart') {
+          drawHeart(ctx, p.size);
+        } else if (p.shape === 'petal') {
+          ctx.beginPath();
+          ctx.ellipse(0, 0, p.size * 0.7, p.size * 0.4, Math.PI / 4, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.4);
+        }
         ctx.restore();
 
         if (p.y > height + 20) {
@@ -315,12 +338,12 @@ export function Music() {
         onClick={toggle}
         aria-pressed={playing}
         className="music-toggle-btn"
-        aria-label={playing ? 'Pause music' : 'Play ambient sound'}
+        aria-label={playing ? 'Pause music' : 'Play our romantic song'}
       >
-        <span className="music-icon" aria-hidden="true">
-          ♫
+        <span className="music-heart-icon" aria-hidden="true">
+          ❤️
         </span>
-        <span className="music-label">{playing ? 'Pause' : 'Play song'}</span>
+        <span className="music-label">{playing ? 'Pause' : 'Play our song'}</span>
         <span className={`music-bars ${playing ? 'is-playing' : ''}`} aria-hidden="true">
           <i />
           <i />
