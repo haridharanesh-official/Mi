@@ -1,0 +1,10 @@
+'use client';
+import {useEffect,useRef,type ReactNode} from 'react';
+import Image from 'next/image';
+import {media,type Category} from '@/content/story';
+export default function CinematicScene({category,children,className='',id,priority=false}:{category:Category;children:ReactNode;className?:string;id?:string;priority?:boolean}){
+ const ref=useRef<HTMLElement>(null);
+ const asset=media.filter(m=>m.category===category&&m.type!=='video').sort((a,b)=>Number(!!b.priority)-Number(!!a.priority))[0];
+ useEffect(()=>{const el=ref.current;if(!el)return;const query=matchMedia('(prefers-reduced-motion: reduce)');let frame=0;const update=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{if(query.matches){el.style.setProperty('--drift','0px');el.style.setProperty('--zoom','1');return}const r=el.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const p=(innerHeight/2-r.top-r.height/2)/(innerHeight+r.height);el.style.setProperty('--drift',`${p*95}px`);el.style.setProperty('--zoom',`${1+Math.abs(p)*.03}`)})};update();addEventListener('scroll',update,{passive:true});addEventListener('resize',update);query.addEventListener('change',update);return()=>{cancelAnimationFrame(frame);removeEventListener('scroll',update);removeEventListener('resize',update);query.removeEventListener('change',update)}},[]);
+ return <section ref={ref} id={id} className={`cinematic-scene ${className} ${asset?'has-photo':'awaiting-photo'}`}>{asset&&<div className="scene-ambient" aria-hidden="true"><Image src={asset.file} alt="" fill sizes="100vw" style={{objectFit:"cover"}}/></div>}<div className="scene-background">{asset?<Image src={asset.file} alt={asset.alt} fill sizes="100vw" priority={priority} placeholder={asset.blurDataURL?'blur':'empty'} blurDataURL={asset.blurDataURL} style={{objectFit:'cover',objectPosition:asset.focalPoint||'50% 50%'}}/>:<span className="awaiting-label">[{category.replaceAll('_',' ').toUpperCase()} PHOTOGRAPH]</span>}</div><div className="scene-shade"/><div className="scene-content">{children}</div>{asset?.caption&&<span className="scene-caption">{asset.caption}</span>}</section>
+}
