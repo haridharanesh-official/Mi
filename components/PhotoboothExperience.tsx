@@ -113,13 +113,6 @@ export default function PhotoboothExperience() {
             <span className="sep">—</span>
             <span className="label">PHOTOBOOTH</span>
           </p>
-
-          <div className="love-ribbon-eyebrow">
-            <span className="ribbon-tail-left" />
-            <span className="ribbon-text">🎀 FOR ADYA · MEMORIES HELD WITH LOVE 💕</span>
-            <span className="ribbon-tail-right" />
-          </div>
-
           <h1 className="photobooth-title">
             Photo<em>booth.</em>
           </h1>
@@ -157,7 +150,6 @@ export default function PhotoboothExperience() {
                   }}
                 >
                   <div className="polaroid-pin" aria-hidden="true" />
-                  <span className="polaroid-heart-sticker" aria-hidden="true">💖</span>
                   <div className="polaroid-image-frame">
                     <Image
                       src={item.meta.file}

@@ -5,35 +5,21 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { story, type Media } from '@/content/story';
 import {
+  Arrow,
   Reveal,
+  CountUpNumber,
   Viewer,
+  ConfettiCanvas,
   getImageMeta,
 } from './Shared';
-import dynamic from 'next/dynamic';
-import HeroVideo from './HeroVideo';
-import DistanceTracker from './DistanceTracker';
-import BangleClimax from './BangleClimax';
-import BirthdayLetter from './BirthdayLetter';
-
-const Charminar3D = dynamic(() => import('./Charminar3D'), {
-  ssr: false,
-  loading: () => (
-    <div className="charminar-3d-wrapper">
-      <div className="charminar-loading-scrim">
-        <div className="charminar-spinner">
-          <span className="spinner-spark">✦</span>
-        </div>
-        <p className="loading-title">Rendering 3D Charminar…</p>
-      </div>
-    </div>
-  ),
-});
 
 export default function StoryExperience() {
   const [viewerItem, setViewerItem] = useState<{
     items: Media[];
     index: number;
   } | null>(null);
+  const [letterOpen, setLetterOpen] = useState(false);
+  const [bangleVariant, setBangleVariant] = useState<'primary' | 'detail'>('primary');
 
   // Key Image Assets (Train & Journey)
   const heroImg = getImageMeta('IMG_20260904_040741');
@@ -61,12 +47,50 @@ export default function StoryExperience() {
   const banglePrimary = getImageMeta('IMG_20260905_164223');
   const bangleDetail = getImageMeta('IMG_20260905_164224_1');
 
+  const activeBangle = bangleVariant === 'primary' ? banglePrimary : bangleDetail;
+
   return (
     <main className="story-root">
       {/* ============================================================
-          01 — OPENING HERO (CINEMATIC BACKGROUND VIDEO)
+          01 — OPENING HERO
           ============================================================ */}
-      <HeroVideo heroImg={heroImg} />
+      <section className="scene hero-scene" id="hero">
+        <div className="hero-bg-frame">
+          {heroImg && (
+            <Image
+              src={heroImg.file}
+              alt={heroImg.alt}
+              fill
+              priority
+              placeholder="blur"
+              blurDataURL={heroImg.blurDataURL}
+              sizes="100vw"
+              className="hero-image"
+              style={{ objectPosition: '45% 35%' }}
+            />
+          )}
+          <div className="hero-overlay" />
+        </div>
+
+        <div className="hero-inner">
+          <div className="hero-content">
+            <p className="hero-pretitle arrive-1">Not every gift begins in a store.</p>
+            <h1 className="hero-title arrive-2">
+              Some begin with <em>a journey.</em>
+            </h1>
+            <p className="hero-dedication arrive-3">
+              For <span>{story.herName}</span>.
+            </p>
+
+            <a href="#departure" className="hero-scroll-prompt arrive-4" aria-label="Begin the journey">
+              <span className="prompt-arrow">
+                <Arrow />
+              </span>
+              <span className="prompt-text">Begin the journey</span>
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* ============================================================
           02 — TRAIN DEPARTURE / TRAIN JOURNEY
@@ -190,9 +214,38 @@ export default function StoryExperience() {
       </section>
 
       {/* ============================================================
-          03 — THE DISTANCE (1,200 KM SECTION & ODOMETER)
+          03 — THE DISTANCE (1,200 KM SECTION)
           ============================================================ */}
-      <DistanceTracker />
+      <section className="distance-section">
+        <div className="distance-container">
+          <Reveal>
+            <p className="distance-pretitle">The miles it took</p>
+
+            <div className="distance-display">
+              <h2 className="distance-number">
+                <CountUpNumber target={story.journeyDistance} duration={2000} />
+                <span className="km-unit"> KM</span>
+              </h2>
+              <div className="route-bar">
+                <span className="route-point">{story.origin}</span>
+                <span className="route-line" aria-hidden="true">
+                  <span className="route-dot start" />
+                  <span className="route-dash" />
+                  <span className="route-dot end" />
+                </span>
+                <span className="route-point">{story.destination}</span>
+              </div>
+            </div>
+
+            <div className="distance-meaning">
+              <h3 className="meaning-line">Not for a vacation.</h3>
+              <p className="meaning-pause">
+                <em>For one birthday gift.</em>
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
       {/* ============================================================
           04 — THE ROUTE (SINGLE TRAVEL MAP SECTION)
@@ -372,11 +425,6 @@ export default function StoryExperience() {
             </p>
           </Reveal>
 
-          {/* Interactive 3D Charminar Monument */}
-          <Reveal>
-            <Charminar3D />
-          </Reveal>
-
           {/* Progressive Visual Approach */}
           <div className="approach-progression-grid">
             <div className="progression-stage stage-wide">
@@ -504,7 +552,93 @@ export default function StoryExperience() {
       {/* ============================================================
           09 — BANGLE REVEAL — THE VISUAL CLIMAX
           ============================================================ */}
-      <BangleClimax banglePrimary={banglePrimary} bangleDetail={bangleDetail} />
+      <section className="bangle-reveal-scene" id="bangle-climax">
+        <div className="bangle-bg-ambient" aria-hidden="true">
+          {activeBangle && (
+            <Image
+              src={activeBangle.file}
+              alt=""
+              fill
+              sizes="100vw"
+              className="bangle-ambient-img"
+            />
+          )}
+        </div>
+
+        <div className="bangle-layout">
+          {/* Main Visual: Bangles & Charminar held high */}
+          <div className="bangle-showcase-col">
+            <Reveal className="bangle-photo-wrapper">
+              {activeBangle && (
+                <div className="bangle-frame">
+                  <Image
+                    src={activeBangle.file}
+                    alt={activeBangle.alt}
+                    width={activeBangle.width}
+                    height={activeBangle.height}
+                    priority
+                    placeholder="blur"
+                    blurDataURL={activeBangle.blurDataURL}
+                    sizes="(max-width: 768px) 95vw, 50vw"
+                    className="bangle-primary-photo"
+                  />
+                  <div className="bangle-tag">
+                    <span>HANDMADE LAC BANGLE · CHARMINAR</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Angle Switcher */}
+              <div className="bangle-angle-toggle">
+                <button
+                  type="button"
+                  className={`angle-btn ${bangleVariant === 'primary' ? 'is-active' : ''}`}
+                  onClick={() => setBangleVariant('primary')}
+                >
+                  Frame 01 · Primary View
+                </button>
+                <button
+                  type="button"
+                  className={`angle-btn ${bangleVariant === 'detail' ? 'is-active' : ''}`}
+                  onClick={() => setBangleVariant('detail')}
+                >
+                  Frame 02 · Alternate Angle
+                </button>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Emotional Climax Text Sequence */}
+          <div className="bangle-text-col">
+            <Reveal>
+              <div className="chapter-eyebrow">
+                <span className="num">06</span>
+                <span className="sep">—</span>
+                <span className="label">THE REVEAL</span>
+              </div>
+
+              <div className="climax-sequence">
+                <p className="seq-step">1,200 kilometres.</p>
+                <p className="seq-step">22+ hours.</p>
+                <p className="seq-step">One city.</p>
+                <p className="seq-step">One search.</p>
+                <h3 className="seq-hero">One Lac bangle.</h3>
+                <h2 className="seq-name">
+                  For <em>Adya.</em>
+                </h2>
+              </div>
+
+              <div className="climax-prose-wrap">
+                <p className="climax-prose-main">
+                  The gift is small.
+                  <br />
+                  <strong>The journey behind it wasn’t.</strong>
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
 
       {/* ============================================================
           10 — THE MESSAGE BEHIND THE GIFT
@@ -542,7 +676,7 @@ export default function StoryExperience() {
                 I hope you don’t only see a bangle.
               </p>
               <h3 className="message-final-line">
-                I hope you remember how much you mean to me. <span className="heart-inline-pulse">❤️</span>
+                I hope you remember how much you mean to me.
               </h3>
             </div>
           </Reveal>
@@ -550,9 +684,58 @@ export default function StoryExperience() {
       </section>
 
       {/* ============================================================
-          11 — HAPPY BIRTHDAY ADYA (Interactive Wish & Letter)
+          11 — HAPPY BIRTHDAY ADYA (Interactive Wish)
           ============================================================ */}
-      <BirthdayLetter />
+      <section className="birthday-section">
+        {letterOpen && <ConfettiCanvas />}
+        <div className="birthday-container">
+          <Reveal>
+            <div className="chapter-eyebrow centered">
+              <span className="num">08</span>
+              <span className="sep">—</span>
+              <span className="label">A WISH FOR YOU</span>
+            </div>
+
+            <h2 className="birthday-headline">
+              Happy Birthday,
+              <br />
+              <em>{story.herName}.</em>
+            </h2>
+
+            <div className="birthday-action-wrap">
+              <button
+                type="button"
+                className="birthday-open-btn"
+                aria-expanded={letterOpen}
+                aria-controls="birthday-letter-content"
+                onClick={() => setLetterOpen(!letterOpen)}
+              >
+                <span>{letterOpen ? 'Fold the letter' : 'Open your birthday wish'}</span>
+                <span className="btn-sparkle" aria-hidden="true">
+                  ✦
+                </span>
+              </button>
+            </div>
+
+            {letterOpen && (
+              <div id="birthday-letter-content" className="birthday-letter-card arrive-fade">
+                <div className="letter-header">
+                  <span className="letter-salutation">Dearest {story.herName},</span>
+                </div>
+                <div className="letter-paragraphs">
+                  {story.birthdayWish.map((para, i) => (
+                    <p key={i}>{para}</p>
+                  ))}
+                </div>
+                <div className="letter-signature">
+                  <span>With all my love,</span>
+                  <em>Always yours.</em>
+                </div>
+              </div>
+            )}
+          </Reveal>
+        </div>
+      </section>
 
       {/* ============================================================
           12 — LOVE STORY (COMES AFTER THE GIFT)
@@ -564,12 +747,6 @@ export default function StoryExperience() {
               <span className="num">09</span>
               <span className="sep">—</span>
               <span className="label">THE ORIGIN OF US</span>
-            </div>
-
-            <div className="love-ribbon-eyebrow">
-              <span className="ribbon-tail-left" />
-              <span className="ribbon-text">🎀 OUR LOVE STORY · FROM 2017 TO INFINITY 💕</span>
-              <span className="ribbon-tail-right" />
             </div>
 
             <p className="timeline-transition-lead">But the truth is…</p>
@@ -585,7 +762,6 @@ export default function StoryExperience() {
                 <div className="milestone-step-marker">
                   <span className="marker-dot" />
                   <span className="marker-index">0{idx + 1}</span>
-                  <span className="marker-love-icon" title="Love Milestone">{['👁️', '💌', '💍', '💖'][idx]}</span>
                 </div>
                 <h3 className="milestone-date">{item.date}</h3>
                 <p className="milestone-title">{item.title}</p>
@@ -662,11 +838,7 @@ export default function StoryExperience() {
             </h2>
 
             <p className="ending-birthday-final">Happy Birthday, Adya.</p>
-            <div className="final-love-seal">
-              <span className="final-heart-icon">♥</span>
-              <span>21.02.2022 — STILL US · ALWAYS IN LOVE</span>
-              <span className="final-heart-icon">♥</span>
-            </div>
+            <span className="ending-seal">21.02.2022 — still us.</span>
           </Reveal>
         </div>
       </footer>
