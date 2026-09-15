@@ -10,6 +10,7 @@ export default function StoryNav() {
 
   const links = [
     { href: '/', label: 'Journey' },
+    { href: '/#charminar', label: 'Charminar 3D' },
     { href: '/photobooth', label: 'Photobooth' },
     { href: '/bloopers', label: 'Bloopers' },
   ];

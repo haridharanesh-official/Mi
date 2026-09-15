@@ -265,6 +265,43 @@
   box-shadow: 0 0 16px var(--gold-glow);
 }
 
+.hero-action-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.hero-shortcut-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(19, 16, 18, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 154, 85, 0.35);
+  border-radius: 40px;
+  padding: 12px 22px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-shortcut-btn:hover {
+  border-color: var(--gold);
+  background: rgba(201, 154, 85, 0.16);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(201, 154, 85, 0.25);
+  transform: translateY(-2px);
+}
+
+.hero-shortcut-btn .shortcut-icon {
+  font-size: 14px;
+}
+
 /* Paced Entry Sequence */
 .arrive-1 {
   animation: heroTextFade 1.2s 0.2s both cubic-bezier(0.16, 1, 0.3, 1);
@@ -2139,6 +2176,727 @@
   }
   to {
     height: 10px;
+  }
+}
+
+/* ------------------------------------------------------------
+   3D CHARMINAR MONUMENT EXPERIENCE
+   ------------------------------------------------------------ */
+.charminar-3d-feature-section {
+  margin-bottom: 90px;
+}
+
+.charminar-3d-header {
+  margin-bottom: 28px;
+  max-width: 780px;
+}
+
+.charminar-3d-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(201, 154, 85, 0.08);
+  border: 1px solid rgba(201, 154, 85, 0.2);
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.charminar-tag-heart {
+  color: #ff4d6d;
+  font-size: 12px;
+}
+
+.charminar-3d-title {
+  font-family: var(--serif);
+  font-size: clamp(30px, 3.6vw, 48px);
+  color: var(--ivory);
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+  line-height: 1.15;
+}
+
+.charminar-3d-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 680px;
+}
+
+.charminar-3d-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 40%, #1e1820 0%, #110d12 100%);
+  border: 1px solid rgba(201, 154, 85, 0.24);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.75), 0 0 50px rgba(201, 154, 85, 0.07);
+  overflow: hidden;
+}
+
+.charminar-3d-canvas-box {
+  position: relative;
+  width: 100%;
+  height: 560px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.charminar-3d-canvas-box:active {
+  cursor: grabbing;
+}
+
+.charminar-fallback-view {
+  position: relative;
+  width: 100%;
+}
+
+.charminar-fallback-frame {
+  position: relative;
+  width: 100%;
+  height: 560px;
+  overflow: hidden;
+}
+
+.charminar-fallback-img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.charminar-fallback-frame:hover .charminar-fallback-img {
+  transform: scale(1.03);
+}
+
+.fallback-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 13, 18, 0.25) 0%,
+    rgba(17, 13, 18, 0.1) 40%,
+    rgba(17, 13, 18, 0.88) 100%
+  );
+  pointer-events: none;
+}
+
+.fallback-caption-overlay {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  z-index: 5;
+}
+
+.fallback-cap-title {
+  font-family: var(--serif);
+  font-size: clamp(18px, 2.2vw, 24px);
+  color: var(--ivory);
+  margin-bottom: 6px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
+}
+
+.fallback-cap-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.charminar-fallback-note {
+  font-size: 11px;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--gold);
+}
+
+.charminar-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.charminar-3d-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 13, 18, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 15;
+  gap: 14px;
+  text-align: center;
+  padding: 24px;
+}
+
+.charminar-spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(201, 154, 85, 0.15);
+  border-top-color: var(--gold);
+  animation: charminarSpin 1s infinite linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-inner {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-bottom-color: rgba(226, 77, 109, 0.6);
+  animation: charminarSpin 1.4s infinite linear reverse;
+}
+
+@keyframes charminarSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-title {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0;
+}
+
+.loading-progress {
+  font-family: var(--serif);
+  font-size: 26px;
+  color: var(--ivory);
+  margin: 0;
+}
+
+.loading-subtext {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.charminar-3d-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 13, 18, 0.95);
+  color: var(--ivory);
+  z-index: 15;
+  gap: 8px;
+}
+
+.charminar-interaction-hint {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(18, 14, 18, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(201, 154, 85, 0.28);
+  border-radius: 30px;
+  padding: 8px 18px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ivory);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.charminar-interaction-hint.is-faded {
+  opacity: 0.15;
+}
+
+.charminar-interaction-hint .hint-icon {
+  color: var(--gold);
+  font-size: 13px;
+}
+
+.charminar-model-badge {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(18, 14, 18, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(201, 154, 85, 0.2);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.charminar-model-badge .badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #38b000;
+  box-shadow: 0 0 8px #38b000;
+}
+
+.charminar-3d-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 22px;
+  background: rgba(14, 10, 14, 0.94);
+  border-top: 1px solid rgba(201, 154, 85, 0.15);
+  flex-wrap: wrap;
+  gap: 12px;
+  position: relative;
+  z-index: 6;
+}
+
+.controls-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.charminar-ctrl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(201, 154, 85, 0.2);
+  border-radius: 24px;
+  padding: 7px 16px;
+  font-size: 11px;
+  color: var(--ivory);
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.charminar-ctrl-btn:hover {
+  border-color: var(--gold);
+  background: rgba(201, 154, 85, 0.1);
+}
+
+.charminar-ctrl-btn.is-active {
+  border-color: var(--gold);
+  background: rgba(201, 154, 85, 0.2);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(201, 154, 85, 0.25);
+}
+
+.charminar-ctrl-btn .ctrl-icon {
+  font-size: 12px;
+  color: var(--gold);
+}
+
+.lighting-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ctrl-label {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.charminar-chip {
+  background: transparent;
+  border: 1px solid rgba(201, 154, 85, 0.2);
+  border-radius: 18px;
+  padding: 6px 13px;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.charminar-chip:hover {
+  border-color: var(--gold);
+  color: var(--ivory);
+}
+
+.charminar-chip.is-active {
+  background: var(--gold);
+  color: #120e11;
+  font-weight: 600;
+  border-color: var(--gold);
+  box-shadow: 0 2px 12px rgba(201, 154, 85, 0.35);
+}
+
+.charminar-3d-placeholder {
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #151015;
+  border-radius: 18px;
+  border: 1px solid rgba(201, 154, 85, 0.2);
+  gap: 16px;
+}
+
+/* ------------------------------------------------------------
+   ROMANTIC HEARTS SYSTEM
+   ------------------------------------------------------------ */
+
+/* Global click/tap burst container */
+.heart-burst-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.floating-heart {
+  position: fixed;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  animation: floatHeartAnim 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  filter: drop-shadow(0 2px 10px rgba(255, 77, 109, 0.45));
+}
+
+@keyframes floatHeartAnim {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(0, 0) scale(0.2) rotate(0deg);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate(calc(var(--drift-x) * 0.25), -24px) scale(var(--scale)) rotate(calc(var(--rot) * 0.5));
+  }
+  75% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(var(--drift-x), -140px) scale(calc(var(--scale) * 1.25)) rotate(var(--rot));
+  }
+}
+
+/* Floating "Send Love" FAB (Bottom Left) */
+.floating-love-widget {
+  position: fixed;
+  bottom: 24px;
+  left: 28px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.love-fab-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(19, 16, 18, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 77, 109, 0.35);
+  border-radius: 40px;
+  padding: 8px 18px;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 77, 109, 0.12);
+}
+
+.love-fab-btn:hover {
+  border-color: #ff4d6d;
+  background: rgba(30, 20, 26, 0.92);
+  box-shadow: 0 12px 32px rgba(255, 77, 109, 0.28), 0 0 24px rgba(255, 77, 109, 0.2);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.love-fab-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.love-fab-icon {
+  color: #ff4d6d;
+  font-size: 14px;
+  display: inline-block;
+  animation: fabHeartBeat 1.8s infinite ease-in-out;
+  text-shadow: 0 0 10px rgba(255, 77, 109, 0.6);
+}
+
+@keyframes fabHeartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.35);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.22);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+.love-fab-badge {
+  background: #ff4d6d;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 12px;
+  letter-spacing: 0;
+  box-shadow: 0 0 8px rgba(255, 77, 109, 0.5);
+}
+
+.love-toast-bubble {
+  background: rgba(19, 16, 18, 0.94);
+  border: 1px solid rgba(255, 77, 109, 0.45);
+  color: var(--ivory);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 77, 109, 0.15);
+  animation: loveToastEnter 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  white-space: nowrap;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+@keyframes loveToastEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Ambient Drifting Hearts in background */
+.ambient-hearts-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ambient-heart {
+  position: absolute;
+  color: #ff4d6d;
+  opacity: 0;
+  user-select: none;
+  animation: ambientFloat 14s infinite linear;
+}
+
+.ambient-heart.h1 {
+  left: 12%;
+  bottom: -50px;
+  font-size: 20px;
+  animation-duration: 16s;
+  animation-delay: 0s;
+  filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.3));
+}
+
+.ambient-heart.h2 {
+  left: 28%;
+  bottom: -50px;
+  font-size: 14px;
+  animation-duration: 20s;
+  animation-delay: 4s;
+  color: var(--gold);
+}
+
+.ambient-heart.h3 {
+  left: 55%;
+  bottom: -50px;
+  font-size: 24px;
+  animation-duration: 18s;
+  animation-delay: 8s;
+  filter: drop-shadow(0 0 12px rgba(255, 77, 109, 0.3));
+}
+
+.ambient-heart.h4 {
+  left: 78%;
+  bottom: -50px;
+  font-size: 16px;
+  animation-duration: 22s;
+  animation-delay: 2s;
+  color: #ff758f;
+}
+
+.ambient-heart.h5 {
+  left: 88%;
+  bottom: -50px;
+  font-size: 18px;
+  animation-duration: 15s;
+  animation-delay: 11s;
+}
+
+@keyframes ambientFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(0deg);
+  }
+  15% {
+    opacity: 0.22;
+  }
+  85% {
+    opacity: 0.22;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-110vh) rotate(45deg);
+  }
+}
+
+/* UI Accents */
+.hero-heart-accent {
+  display: inline-block;
+  color: #ff4d6d;
+  font-size: 0.85em;
+  margin-left: 6px;
+  animation: fabHeartBeat 2.2s infinite ease-in-out;
+  text-shadow: 0 0 14px rgba(255, 77, 109, 0.6);
+  vertical-align: middle;
+}
+
+.seal-heart {
+  color: #ff4d6d;
+  margin-left: 4px;
+  display: inline-block;
+  animation: fabHeartBeat 2.4s infinite ease-in-out;
+}
+
+/* Polaroid Card Heart Reaction Button */
+.polaroid-caption-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+.polaroid-heart-btn {
+  background: transparent;
+  border: 1px solid rgba(201, 154, 85, 0.25);
+  border-radius: 16px;
+  padding: 3px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin-top: -2px;
+}
+
+.polaroid-heart-btn .heart-icon {
+  font-size: 12px;
+  color: #a89f91;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.polaroid-heart-btn .heart-count {
+  font-size: 10px;
+  color: #a89f91;
+  font-weight: 500;
+}
+
+.polaroid-heart-btn:hover {
+  border-color: #ff4d6d;
+  background: rgba(255, 77, 109, 0.08);
+}
+
+.polaroid-heart-btn:hover .heart-icon {
+  color: #ff4d6d;
+  transform: scale(1.2);
+}
+
+.polaroid-heart-btn.is-liked {
+  border-color: #ff4d6d;
+  background: rgba(255, 77, 109, 0.12);
+}
+
+.polaroid-heart-btn.is-liked .heart-icon {
+  color: #ff4d6d;
+  animation: popHeart 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.polaroid-heart-btn.is-liked .heart-count {
+  color: #ff4d6d;
+  font-weight: 600;
+}
+
+@keyframes popHeart {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .charminar-3d-canvas-box {
+    height: 400px;
+  }
+
+  .charminar-3d-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .controls-group {
+    justify-content: center;
+  }
+
+  .floating-love-widget {
+    bottom: 20px;
+    left: 18px;
+  }
+
+  .love-fab-btn {
+    padding: 8px 14px;
+    font-size: 9.5px;
+  }
+
+  .love-toast-bubble {
+    font-size: 10.5px;
+    padding: 6px 12px;
   }
 }
 

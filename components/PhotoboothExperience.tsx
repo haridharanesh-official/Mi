@@ -8,6 +8,12 @@ import { Reveal, Viewer, getImageMeta } from './Shared';
 
 export default function PhotoboothExperience() {
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+  const [likes, setLikes] = useState<Record<string, number>>({});
+
+  const handleLike = (file: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLikes((prev) => ({ ...prev, [file]: (prev[file] || 0) + 1 }));
+  };
 
   const photoList: { meta: Media; stamp: string; tilt: number }[] = [
     {
@@ -163,7 +169,21 @@ export default function PhotoboothExperience() {
                     />
                   </div>
                   <div className="polaroid-caption-area">
-                    <p className="polaroid-caption">{item.meta.caption}</p>
+                    <div className="polaroid-caption-row">
+                      <p className="polaroid-caption">{item.meta.caption}</p>
+                      <button
+                        type="button"
+                        className={`polaroid-heart-btn ${(likes[item.meta.file] || 0) > 0 ? 'is-liked' : ''}`}
+                        onClick={(e) => handleLike(item.meta.file, e)}
+                        aria-label="Like this memory"
+                        title="Love this photo"
+                      >
+                        <span className="heart-icon">♥</span>
+                        {(likes[item.meta.file] || 0) > 0 && (
+                          <span className="heart-count">{likes[item.meta.file]}</span>
+                        )}
+                      </button>
+                    </div>
                     <span className="polaroid-stamp">{item.stamp}</span>
                   </div>
                 </div>

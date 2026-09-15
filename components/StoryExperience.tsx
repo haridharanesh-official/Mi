@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { story, type Media } from '@/content/story';
 import {
   Arrow,
@@ -12,6 +13,16 @@ import {
   ConfettiCanvas,
   getImageMeta,
 } from './Shared';
+
+const Charminar3D = dynamic(() => import('./Charminar3D'), {
+  ssr: false,
+  loading: () => (
+    <div className="charminar-3d-placeholder">
+      <div className="charminar-spinner"><span className="spinner-inner" /></div>
+      <p className="loading-title">ILLUMINATING CHARMINAR…</p>
+    </div>
+  ),
+});
 
 export default function StoryExperience() {
   const [viewerItem, setViewerItem] = useState<{
@@ -79,15 +90,21 @@ export default function StoryExperience() {
               Some begin with <em>a journey.</em>
             </h1>
             <p className="hero-dedication arrive-3">
-              For <span>{story.herName}</span>.
+              For <span>{story.herName}</span> <span className="hero-heart-accent" aria-hidden="true">♥</span>
             </p>
 
-            <a href="#departure" className="hero-scroll-prompt arrive-4" aria-label="Begin the journey">
-              <span className="prompt-arrow">
-                <Arrow />
-              </span>
-              <span className="prompt-text">Begin the journey</span>
-            </a>
+            <div className="hero-action-row arrive-4">
+              <a href="#departure" className="hero-scroll-prompt" aria-label="Begin the journey">
+                <span className="prompt-arrow">
+                  <Arrow />
+                </span>
+                <span className="prompt-text">Begin the journey</span>
+              </a>
+              <a href="#charminar" className="hero-shortcut-btn" aria-label="Jump to 3D Charminar model">
+                <span className="shortcut-icon" aria-hidden="true">🏛️</span>
+                <span className="shortcut-text">Charminar 3D</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -406,7 +423,7 @@ export default function StoryExperience() {
       {/* ============================================================
           07 — CHARMINAR REVEAL
           ============================================================ */}
-      <section className="charminar-approach-section">
+      <section className="charminar-approach-section" id="charminar">
         <div className="approach-container">
           <Reveal>
             <div className="chapter-eyebrow">
@@ -424,6 +441,24 @@ export default function StoryExperience() {
               This was where the search really began.
             </p>
           </Reveal>
+
+          {/* Interactive 3D Charminar Exploration */}
+          <div className="charminar-3d-feature-section">
+            <Reveal>
+              <div className="charminar-3d-header">
+                <span className="charminar-3d-tag">
+                  <span className="charminar-tag-heart">♥</span> 3D MONUMENT EXPERIENCE
+                </span>
+                <h3 className="charminar-3d-title">Standing before the arches</h3>
+                <p className="charminar-3d-desc">
+                  Four grand minarets soaring into the Deccan sky. Drag to explore the monument in 360°, watch the birds soar overhead, and shift the atmosphere from warm golden dusk to midnight lanterns.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal>
+              <Charminar3D />
+            </Reveal>
+          </div>
 
           {/* Progressive Visual Approach */}
           <div className="approach-progression-grid">
@@ -838,7 +873,7 @@ export default function StoryExperience() {
             </h2>
 
             <p className="ending-birthday-final">Happy Birthday, Adya.</p>
-            <span className="ending-seal">21.02.2022 — still us.</span>
+            <span className="ending-seal">21.02.2022 — still us <span className="seal-heart">♥</span></span>
           </Reveal>
         </div>
       </footer>
