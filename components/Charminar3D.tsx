@@ -339,7 +339,7 @@ export default function Charminar3D() {
     // Update real-time environment map for stone reflections
     if (pmremGeneratorRef.current && scene) {
       try {
-        const renderTarget = pmremGeneratorRef.current.fromScene(sky);
+        const renderTarget = pmremGeneratorRef.current.fromScene(scene);
         scene.environment = renderTarget.texture;
       } catch {
         // Safe fallback
@@ -466,7 +466,7 @@ export default function Charminar3D() {
     pmremGeneratorRef.current = pmremGenerator;
 
     try {
-      const renderTarget = pmremGenerator.fromScene(sky);
+      const renderTarget = pmremGenerator.fromScene(scene);
       scene.environment = renderTarget.texture;
     } catch {
       // Safe fallback

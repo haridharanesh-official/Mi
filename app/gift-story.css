@@ -2563,6 +2563,16 @@
    ROMANTIC HEARTS SYSTEM
    ------------------------------------------------------------ */
 
+/* 60fps Canvas Cursor Trail */
+.cursor-trail-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9998;
+}
+
 /* Global click/tap burst container */
 .heart-burst-container {
   position: fixed;
